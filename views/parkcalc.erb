@@ -1,18 +1,18 @@
 <h1>PARKING COST CALCULATOR</h1>
-<form action="/parkcalc" method="post" name="pakrcalc_form">
+<form action="/parkcalc" method="post" name="ParkcalcForm">
 <table>
   <tbody>
     <tr>
       <th>Choose a parking lot</th>
-      <td><select name="parkingLot" id="parkingLot"><option value="1">Valet Parking</option></select></td>
+      <td><select name="parkingLot" id="ParkingLot"><option value="1">Valet Parking</option></select></td>
     </tr>
     <tr>
       <th>Please input entry date and time</th>
-      <td><input type="text" name="entry_date" value="" /><input type="text" name="entry_time" value="" /><input type="radio" name="entry_time_ampm" value="AM" checked="checked"/>AM<input type="radio" name="entry_time_ampm" value="PM" />PM</td>
+      <td><input type="text" name="StartingDate" value="" /><input type="text" name="StartingTime" value="" /><input type="radio" name="StartingTimeAMPM" value="AM" checked="checked"/>AM<input type="radio" name="StartingTimeAMPM" value="PM" />PM</td>
     </tr>
     <tr>
       <th>Please input leaving date and time</th>
-      <td><input type="text" name="leave_date" value="" /><input type="text" name="leave_time" value="" /><input type="radio" name="leave_time_ampm" value="AM" checked="checked"/>AM<input type="radio" name="leave_time_ampm" value="PM" />PM</td>
+      <td><input type="text" name="LeavingDate" value="" /><input type="text" name="LeavingTime" value="" /><input type="radio" name="LeavingTimeAMPM" value="AM" checked="checked"/>AM<input type="radio" name="LeavingTimeAMPM" value="PM" />PM</td>
     </tr>
     <tr>
       <th>ESTIMATED PARKING COSTS</th>
