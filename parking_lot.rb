@@ -1,4 +1,5 @@
-require 'sinatra'
+require 'sinatra/base'
+require 'sinatra/reloader'
 
 # Heroku has a limited number of gems installed, and chance is that you need
 # some additional gems, like haml. The trick is to vendor them with your app. 
@@ -7,5 +8,8 @@ Dir['vendor/*'].each do |lib|
   $:.unshift(File.join(File.dirname(__FILE__), lib, 'lib'))
 end
 
-get '/parkcalc' do
+class ParkingLotApp < Sinatra::Base
+  get '/parkcalc' do
+    erb :parkcalc
+  end
 end

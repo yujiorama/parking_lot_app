@@ -3,6 +3,6 @@ require 'bundler'
 
 Bundler.require
 
-require './parking_lot'
+require './parking_lot.rb'
 
-run Sinatra::Application
+run ParkingLotApp
