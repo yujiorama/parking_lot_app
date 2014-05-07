@@ -9,13 +9,17 @@ Dir['vendor/*'].each do |lib|
 end
 
 class ParkingLotApp < Sinatra::Base
+  helpers do
+    include Rack::Utils; alias_method :h, :escape_html
+  end
+
   get '/parkcalc' do
-    @estimatedParkingCosts = 0
+    @estimatedParkingCosts = "$ 0.00"
     erb :parkcalc
   end
   
   post '/parkcalc' do
-    @estimatedParkingCosts = 12
+    @estimatedParkingCosts = "$ 12.00"
     erb :parkcalc
   end
 end
