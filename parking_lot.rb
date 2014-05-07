@@ -10,6 +10,12 @@ end
 
 class ParkingLotApp < Sinatra::Base
   get '/parkcalc' do
+    @estimatedParkingCosts = 0
+    erb :parkcalc
+  end
+  
+  post '/parkcalc' do
+    @estimatedParkingCosts = 12
     erb :parkcalc
   end
 end
