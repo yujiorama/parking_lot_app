@@ -4,7 +4,11 @@
   <tbody>
     <tr>
       <th>Choose a parking lot</th>
-      <td><select name="parkingLot" id="ParkingLot"><option value="1">Valet Parking</option></select></td>
+      <td><select name="parkingLot" id="ParkingLot">
+          <% @parkingLots.each do |k,v| %>
+          <option value="<%= h k %>"><%= h v %></option>
+          <% end %>
+      </select></td>
     </tr>
     <tr>
       <th>Please input entry date and time</th>
