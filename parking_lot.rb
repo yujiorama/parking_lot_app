@@ -37,6 +37,7 @@ class ParkingLot
   @@source = [
       {"value" => "1", "label" => "Valet Parking", "selected" => false},
       {"value" => "2", "label" => "Short-Term Parking", "selected" => false},
+      {"value" => "3", "label" => "Economy Parking", "selected" => false},
       {"value" => "9", "label" => "Takashimaya", "selected" => false}
   ]
 
@@ -122,9 +123,19 @@ class ShortTermCalculator
 
 end
 
+class EconomyCalculator
+  def accept(parking_lot)
+    "3" == parking_lot
+  end
+
+  def cost(starting, leaving)
+    "$ 0.00"
+  end
+end
+
 class Calculator
   
-  @@calculators = [ValetCalculator.new, ShortTermCalculator.new]
+  @@calculators = [ValetCalculator.new, ShortTermCalculator.new, EconomyCalculator.new]
 
   def self.create(parking_lot)
     @@calculators.each do |e|
