@@ -34,20 +34,35 @@ class ParkingLot
   attr :label
   attr :selected, true
 
+  @@source = [
+      {"value" => "1", "label" => "Valet Parking", "selected" => false},
+      {"value" => "2", "label" => "Short-Term Parking", "selected" => false},
+      {"value" => "9", "label" => "Takashimaya", "selected" => false}
+  ]
+
   def initialize(value, label, selected)
     @value = value
     @label = lavel
     @selected = selected
   end
+
   def initialize(h)
     @value = h["value"]
     @label = h["label"]
     @selected = h["selected"]
   end
+
+  def self.source
+    @@source
+  end
 end
 
-module Calculator
-  def self.cost(starting, leaving)
+class ValetCalculator
+  def accept(parking_lot)
+    "1" == parking_lot
+  end
+
+  def cost(starting, leaving)
     return "$ 0.00" if leaving < starting
     days = (leaving - starting).divmod(24*60*60)
     hours = days[1].divmod(60*60)
@@ -73,6 +88,54 @@ module Calculator
   end
 end
 
+class ShortTermCalculator
+  def accept(parking_lot)
+    "2" == parking_lot
+  end
+
+  def cost(starting, leaving)
+    return "$ 0.00" if leaving < starting
+    days = (leaving - starting).divmod(24*60*60)
+    hours = days[1].divmod(60*60)
+    minutes = hours[1].divmod(60)
+    pp starting, leaving, days, hours, minutes
+    
+    costs = 0.00
+    total_minutes = 0
+    if days[0] > 0
+      total_minutes = (days[0] * 24*60*60) + (hours[0] * 60) + minutes[0]
+    else
+      total_minutes = (hours[0] * 60) + minutes[0]
+      if total_minutes <= 60
+        costs += 2.00
+        total_minutes = 0
+      end
+    end
+    units = total_minutes.divmod(30)
+    costs += units[0] * 1.00
+    if units[1] > 0
+      costs += 1.00
+    end
+    pp costs, units, total_minutes
+    return "$ %.2f" % costs
+  end
+
+end
+
+class Calculator
+  
+  @@calculators = [ValetCalculator.new, ShortTermCalculator.new]
+
+  def self.create(parking_lot)
+    @@calculators.each do |e|
+      if e.accept(parking_lot)
+        return e
+      end
+    end
+    return nil
+  end
+end
+
 class ParkingLotApp < Sinatra::Base
   enable :logging
   register Sinatra::Reloader
@@ -90,8 +153,7 @@ class ParkingLotApp < Sinatra::Base
   end
   
   def parkingLots
-    source = [{"value" => "1", "label" => "Valet Parking", "selected" => false}, {"value" => "9", "label" => "Takashimaya", "selected" => false}]
-    source.map { |h|
+    ParkingLot.source.map { |h|
       ParkingLot.new(h)
     }.map { |e|
       if form && form.parkingLot == e.value
@@ -115,7 +177,7 @@ class ParkingLotApp < Sinatra::Base
     form.validate
     starting = time_for("#{form.startingDate} #{form.startingTime} #{form.startingTimeAMPM}")
     leaving  = time_for("#{form.leavingDate} #{form.leavingTime} #{form.leavingTimeAMPM}")
-    @estimatedParkingCosts = Calculator.cost(starting, leaving)
+    @estimatedParkingCosts = Calculator.create(form.parkingLot).cost(starting, leaving)
     erb :parkcalc
   end
 end
