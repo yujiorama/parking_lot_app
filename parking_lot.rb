@@ -143,6 +143,7 @@ class EconomyCalculator
         costs = 9.0 * (days[0] - weeks[0])
       else
         costs = 9.0 * days[0]
+      end
     else
       costs = 9.0 * days[0]
       if (hours[0] >= 5 || (hours[0] == 4 && minutes[0] > 0))
