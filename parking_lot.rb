@@ -131,16 +131,15 @@ class EconomyCalculator
   def cost(starting, leaving)
     return "$ 0.00" if leaving < starting
     days = (leaving - starting).divmod(24*60*60)
+    weeks = days[0].divmod(7)
     hours = days[1].divmod(60*60)
     minutes = hours[1].divmod(60)
     pp starting, leaving, days, hours, minutes
     
     costs = 0.00
 
-    if days[0] >= 18
-      costs = 9.0 * 18
-    elsif days[0] >= 6
-      costs = 9.0 * days[0]
+    if weeks[0] > 0
+      costs = 9.0 * (days[0] - weeks[0])
     else
       costs = 9.0 * days[0]
       if (hours[0] >= 5 || (hours[0] == 4 && minutes[0] > 0))
